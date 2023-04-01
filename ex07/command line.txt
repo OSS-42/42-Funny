@@ -1,0 +1,1 @@
+gcc -Wno-implicit-function-declaration smallest.c
