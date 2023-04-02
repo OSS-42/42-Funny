@@ -104,25 +104,27 @@ void	frame(char *argv){
 		i++;
 	}
 	i = 0;
-	for (int j = 0; j < maxlen + 4; j++) {
-			printf("*");
-		}
-	printf("\n");
-	while (wordslist && wordslist[i]) {
-		printf("* ");
-		printf("%s", wordslist[i]);
-		for (int j = strlen(wordslist[i]) + 2; j < maxlen + 3; j++) {
-			printf(" ");
-		}
-		printf("*");
+	if (wordslist && wordslist[i]) {
+		for (int j = 0; j < maxlen + 4; j++) {
+				printf("*");
+			}
 		printf("\n");
-		i++;
+		while (wordslist && wordslist[i]) {
+			printf("* ");
+			printf("%s", wordslist[i]);
+			for (int j = strlen(wordslist[i]) + 2; j < maxlen + 3; j++) {
+				printf(" ");
+			}
+			printf("*");
+			printf("\n");
+			i++;
+		}
+		for (int j = 0; j < maxlen + 4; j++) {
+				printf("*");
+			}
+			printf("\n");
+		ft_dbl_ptr_free((void **)wordslist);
 	}
-	for (int j = 0; j < maxlen + 4; j++) {
-			printf("*");
-		}
-		printf("\n");
-	ft_dbl_ptr_free((void **)wordslist);
 	return ;
 }
 
