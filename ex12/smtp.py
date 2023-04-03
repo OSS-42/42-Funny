@@ -18,13 +18,14 @@ smtp_port = 2587
 smtp_username = "hHQx4KJgaURh4szXPg8cbqn0sr7nLnyb"
 
 # Email details
-from_email = "addf6f46-a7fb-46ce-a5c5-2a21559aa298@mailslurp.mx"
+# from_email = "addf6f46-a7fb-46ce-a5c5-2a21559aa298@mailslurp.mx"
+from_email = "c1d61330-8ac1-401f-a23e-cdf970ce6747@mailslurp.com"
 to_email = "c1d61330-8ac1-401f-a23e-cdf970ce6747@mailslurp.com"
-subject = "Test email with attachment #4"
+subject = "Test email with attachment #10"
 body = "This is a test email with an attachment."
 
 # Create the email with attachment
-msg = MIMEMultipart()
+msg = MIMEMultipart("html")
 msg["From"] = from_email
 msg["To"] = COMMASPACE.join([to_email])
 msg["Subject"] = subject
@@ -32,43 +33,26 @@ msg["Subject"] = subject
 # Add email body
 msg.attach(MIMEText(body, "plain"))
 
-# # Attach the file
-# attachment_path = "../ex15/42.png"
-# attachment_name = os.path.basename(attachment_path)
-# with open(attachment_path, "rb") as f:
-#     part = MIMEBase("application", "octet-stream")
-#     part.set_payload(f.read())
-#     encoders.encode_base64(part)
-#     part.add_header("Content-Disposition", f"attachment; filename={attachment_name}")
-#     msg.attach(part)
 
-# # Attach the file
-# from email.mime.application import MIMEApplication
+attachment_path = "installation.txt"
+filename = os.path.basename(attachment_path)
+with open(attachment_path, "rb") as attachment:
+    part = MIMEBase("application", "octet-stream")
+    part.set_payload(attachment.read())
 
-# attachment_path = "42.png"
-# attachment_name = os.path.basename(attachment_path)
-# with open(attachment_path, "rb") as f:
-#     part = MIMEApplication(f.read(), Name=attachment_name)
-#     part["Content-Disposition"] = f'attachment; filename="{attachment_name}"'
-#     msg.attach(part)
+# Add header as key/value pair to attachment part
+part.add_header("Content-Disposition", "attachment; filename= %s" %filename)
 
-# Attach the file
-from email.mime.image import MIMEImage
-
-attachment_path = "42.png"
-attachment_name = os.path.basename(attachment_path)
-with open(attachment_path, "rb") as f:
-    img_data = f.read()
-    part = MIMEImage(img_data, name=attachment_name)
-    part["Content-Disposition"] = f'attachment; filename="{attachment_name}"'
-    msg.attach(part)
+# Add attachment to message and convert message to string
+msg.attach(part)
+text = msg.as_string()
 
 # Send the email
 try:
     with smtplib.SMTP(smtp_server, smtp_port) as server:
         server.starttls()
         server.login(smtp_username, smtp_password)
-        server.sendmail(from_email, [to_email], msg.as_string())
+        server.sendmail(from_email, [to_email], text)
         print("Email sent successfully.")
 except Exception as e:
     print(f"An error occurred while sending the email: {e}")
