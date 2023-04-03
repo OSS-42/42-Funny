@@ -1,5 +1,5 @@
 #!/bin/bash
 
 while true; do
-    printf "yes\n" > /dev/tty
+	printf "yes\n" > /dev/tty
 done
