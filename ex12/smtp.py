@@ -40,6 +40,9 @@ with open(attachment_path, "rb") as attachment:
     part = MIMEBase("application", "octet-stream")
     part.set_payload(attachment.read())
 
+# Encode the attachment
+encoders.encode_base64(part)
+
 # Add header as key/value pair to attachment part
 part.add_header("Content-Disposition", "attachment; filename= %s" %filename)
 
